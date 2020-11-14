@@ -13,20 +13,23 @@ cellre = re.compile(r'\b[A-Z][0-9]\b')
 
 def cellname(col, row):
     # returns a string translates col 0, row 0 to 'A1'
-    pass
+    # uses ascii to find letter equivalent to number
+    return chr(ord('A')+col) + str(row+1)
 
 
 class Cell():
     def __init__(self, row, col, siblings, parent):
-        # save off instance variables from arguments
-        # and also
-        #set name to cellname(i, j)
-        # set value of cell to zero
-        # set formula to a str(value)
-        # Set of Dependencies - must be updated if this cell changes
-        # make deps empty
-        # Set of Requirements - values required for this cell to calculate
-        # make reqs empty
+        self.row = row
+        self.column = col
+        self.name = cellname(col, row)
+        self.siblings = siblings
+        self.parent = parent
+
+        self.value = 0
+        self.formula = str(self.value)
+
+        self.depenencies = set()
+        self.requirements = set()
 
         # be happy you get this machinery for free.
         self.var = tk.StringVar()
@@ -43,6 +46,7 @@ class Cell():
 
         # set this cell's var to cell's value
         # and you're done.
+        self.var.set(self.value)
 
     def move(self, rowadvance, coladvance):
         targetrow = (self.row + rowadvance) % Nrows
@@ -79,7 +83,7 @@ class Cell():
         # 
 
     def propagate(self):
-        pass 
+        pass
         # for each of your deps
         #     calculate
         #     propogate
